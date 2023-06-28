@@ -49,7 +49,7 @@ const Users: React.FC<UsersProps> = () => {
               {e.creditors.map((e, index) => (
                 <Col key={index + "creditors"} span={24} style={{ marginTop: "10px" }}>
                   <div>{e.name}:</div>
-                  <div>{e.amount + " BYN"}</div>
+                  <div>{e.amount.toFixed(2) + " BYN"}</div>
                 </Col>
               ))}
             </Row>

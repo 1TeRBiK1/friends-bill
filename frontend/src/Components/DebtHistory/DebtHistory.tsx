@@ -33,6 +33,7 @@ const DebtHistory: React.FC = () => {
         textAlign: "center",
         justifyContent: "center",
         alignItems: "center",
+        flexDirection: "column",
       }}
     >
       <Row>History: </Row>
@@ -58,7 +59,12 @@ const DebtHistory: React.FC = () => {
                 width: "50%",
                 minWidth: 300,
               }}
-              actions={[<DeleteOutlined key="delete" onClick={() => console.log('delete')}/>]}
+              actions={[
+                <DeleteOutlined
+                  key="delete"
+                  onClick={() => console.log("delete")}
+                />,
+              ]}
             >
               <Row>Кто платил: {e.creditor}</Row>
               <Row>Сумма: {e.amount}</Row>

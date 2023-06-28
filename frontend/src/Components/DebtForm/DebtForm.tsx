@@ -4,15 +4,20 @@ import { Form, Input, Select, DatePicker, Button, InputNumber } from "antd";
 import http from "../../Axios/http";
 const { Option } = Select;
 
-interface DebtFormProps {}
+interface DebtFormProps {
+  setReset: (prev: number) => void;
+}
 
-const DebtForm: React.FC<DebtFormProps> = () => {
+const DebtForm: React.FC<DebtFormProps> = ({ setReset }) => {
+  const [form] = Form.useForm();
+
   const onFinish = (values: any) => {
     const newValues = { ...values, date: values.date.toDate() };
     console.log("Received values of form:", newValues);
     http.post("/debts", newValues);
+    form.resetFields();
+    setReset(new Date().getMilliseconds());
   };
-  const [form] = Form.useForm();
   return (
     <Row
       style={{
