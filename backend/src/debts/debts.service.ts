@@ -68,7 +68,7 @@ export class DebtsService {
   }
 
   async findAll(): Promise<Debts[]> {
-    return this.debtsModel.find().exec();
+    return this.debtsModel.find().sort({ _id: -1 }).limit(30).exec();
   }
 
   remove(id: number): Promise<Debts> {
