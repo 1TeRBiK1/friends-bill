@@ -6,7 +6,10 @@
   },
   "scripts": {
     "start": "cd backend && concurrently \"npm run start:dev\" \"cd ../frontend && npm start\"",
-    "prettify": "prettier --ignore-path .prettierignore --write ."
+    "prettify": "prettier --ignore-path .prettierignore --write .",
+    "build": "cd backend && npm i && nest build",
+    "start:prod": "cd backend && npm i && node dist/main.js",
+    "heroku-postbuild": "sh heroku-postbuild"
   },
   "dependencies": {
     "ts-node": "^10.9.1"
