@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Row, Col, Switch, Modal, Space, Spin } from "antd";
+import { useState } from "react";
+import { Row, Switch, Modal, Space, Spin } from "antd";
 import { Form, Input, Select, DatePicker, Button, InputNumber } from "antd";
 import http from "../../../../Axios/http";
 import { IDeptor } from "../../../../Types/Deptor";

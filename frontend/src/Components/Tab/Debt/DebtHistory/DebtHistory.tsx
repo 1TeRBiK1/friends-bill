@@ -70,6 +70,7 @@ const DebtHistory: React.FC<{
 
   return (
     <>
+      {error ? error : null}
       {loading ? (
         <Space direction="vertical" style={{ width: "100%", marginTop: 40 }}>
           <Spin tip="Loading" size="large">

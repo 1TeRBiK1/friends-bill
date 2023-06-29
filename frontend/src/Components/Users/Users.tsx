@@ -24,6 +24,7 @@ const Users: React.FC<UsersProps> = ({ reset }) => {
 
   return (
     <>
+      {error ? error : null}
       {loading ? (
         <Space direction="vertical" style={{ width: "100%" }}>
           <Spin tip="Loading" size="large">

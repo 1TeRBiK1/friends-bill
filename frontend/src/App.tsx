@@ -1,7 +1,5 @@
 import Users from "./Components/Users/Users";
-import DebtForm from "./Components/Tab/Debt/DebtForm/DebtForm";
-import { Row, Col } from "antd";
-import DebtHistory from "./Components/Tab/Debt/DebtHistory/DebtHistory";
+import { Row } from "antd";
 import { useState } from "react";
 import Tab from "./Components/Tab/Tab";
 

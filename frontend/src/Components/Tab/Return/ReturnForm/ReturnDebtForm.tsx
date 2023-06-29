@@ -1,9 +1,7 @@
-import { useState, useEffect } from "react";
-import { Row, Col, Switch, Modal, Space, Spin } from "antd";
-import { Form, Input, Select, DatePicker, Button, InputNumber } from "antd";
+import { useState } from "react";
+import { Row, Modal, Space, Spin } from "antd";
+import { Form, Select, DatePicker, Button, InputNumber } from "antd";
 import http from "../../../../Axios/http";
-import { IDeptor } from "../../../../Types/Deptor";
-import { IDebtHistory } from "../../../../Types/DebtHistory";
 import { formatDate } from "../../Debt/DebtHistory/DebtHistory";
 import { IReturnDebtHistory } from "../../../../Types/ReturnDebtHistory";
 const { Option } = Select;

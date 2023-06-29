@@ -1,7 +1,6 @@
 import { Row, Card, Space, Spin, Modal } from "antd";
 import { useEffect, useState } from "react";
 import http from "../../../../Axios/http";
-import { IDebtHistory } from "../../../../Types/DebtHistory";
 import { DeleteOutlined } from "@ant-design/icons";
 import { IReturnDebtHistory } from "../../../../Types/ReturnDebtHistory";
 
@@ -69,6 +68,7 @@ const ReturnHistory: React.FC<{
 
   return (
     <>
+      {error ? error : null}
       {loading ? (
         <Space direction="vertical" style={{ width: "100%", marginTop: 40 }}>
           <Spin tip="Loading" size="large">
