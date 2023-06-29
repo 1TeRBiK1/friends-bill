@@ -7,4 +7,5 @@ export class Debt {
   amount: number;
   date: Date;
   description: string;
+  isDebt: boolean;
 }
