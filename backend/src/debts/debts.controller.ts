@@ -28,16 +28,22 @@ export class DebtsController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.debtsService.remove(+id);
+    console.log(id);
+    return this.debtsService.remove(id);
   }
 
   @Post('return-debt')
-  returnDebt(@Body() returnDebtDto: ReturnDebtDto) {
-    return this.debtsService.returnDebt(returnDebtDto);
+  createReturnDebt(@Body() returnDebtDto: ReturnDebtDto) {
+    return this.debtsService.createReturnDebt(returnDebtDto);
+  }
+
+  @Delete('return-debt/:id')
+  removeReturnDebt(@Param('id') id: string) {
+    return this.debtsService.removeReturnDebt(id);
   }
 
   @Get('return-debt')
-  findAllReturn(){
+  findAllReturn() {
     return this.debtsService.findAllReturn();
   }
 }

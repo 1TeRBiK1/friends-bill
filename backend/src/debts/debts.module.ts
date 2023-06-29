@@ -6,12 +6,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User } from 'src/users/entities/user.entity';
 import { UsersSchema } from 'src/users/users.schema';
 import { UsersModule } from 'src/users/users.module';
+import { ReturnDebts, ReturnDebtsSchema } from './returnDebts.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Debts.name, schema: DebtsSchema },
       { name: User.name, schema: UsersSchema },
+      { name: ReturnDebts.name, schema: ReturnDebtsSchema },
     ]),
     UsersModule,
   ],

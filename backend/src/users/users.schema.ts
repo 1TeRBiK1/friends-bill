@@ -16,7 +16,7 @@ export class Users {
   name: string;
 
   @Prop({ required: true })
-  creditors: Deptor[]
+  creditors: Deptor[];
 }
 
 const UsersSchema = SchemaFactory.createForClass(Users);

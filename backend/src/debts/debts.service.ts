@@ -1,22 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDebtDto } from './dto/create-debt.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import {
-  Debts,
-  DebtsDocument,
-  ReturnDebts,
-  ReturnDebtsDocument,
-} from './debts.schema';
-import { Model } from 'mongoose';
+import { Debts, DebtsDocument } from './debts.schema';
+import mongoose, { Model, Types } from 'mongoose';
 import { User } from 'src/users/entities/user.entity';
 import { UsersDocument } from 'src/users/users.schema';
 import { ReturnDebtDto } from './dto/return-debt.dto';
+import { ReturnDebts, ReturnDebtsDocument } from './returnDebts.schema';
 
 @Injectable()
 export class DebtsService {
   constructor(
     @InjectModel(Debts.name) private debtsModel: Model<DebtsDocument>,
-    @InjectModel(Debts.name)
+    @InjectModel(ReturnDebts.name)
     private returnDebtsModel: Model<ReturnDebtsDocument>,
     @InjectModel(User.name) private usersModel: Model<UsersDocument>,
   ) {}
@@ -27,15 +23,11 @@ export class DebtsService {
       const createdDebt = new this.debtsModel(createDebtDto);
       const savedDebt = await createdDebt.save();
 
-      console.log(savedDebt);
-
       // Находим по транзакции кредитора
       const creditor = savedDebt.creditor;
       const creditorFromDB = await this.usersModel
         .findOne({ name: creditor })
         .exec();
-
-      console.log(creditorFromDB);
 
       for (const debtor of savedDebt.debtors) {
         // Обновление состояния долга у должников
@@ -65,12 +57,9 @@ export class DebtsService {
             { $inc: { [pathDebt]: -debtor.amount } }, // Увеличить сумму долга должника на заданную сумму
           )
           .exec();
-
-        console.log(debtor, pathCreditor, pathDebt, debtorFromDB);
       }
       return savedDebt;
     } catch (e) {
-      console.log(e);
       return e;
     }
   }
@@ -79,17 +68,16 @@ export class DebtsService {
     return this.debtsModel.find().sort({ _id: -1 }).limit(30).exec();
   }
 
-  async remove(id: number): Promise<Debts> {
+  async remove(id: string): Promise<Debts> {
     try {
-      const debtFromDB = await this.debtsModel.findById(id);
-
+      const debtFromDB = await this.debtsModel.findById(
+        new mongoose.Types.ObjectId(id),
+      );
       // Находим по транзакции кредитора
       const creditor = debtFromDB.creditor;
       const creditorFromDB = await this.usersModel
         .findOne({ name: creditor })
         .exec();
-
-      console.log(creditorFromDB);
 
       for (const debtor of debtFromDB.debtors) {
         // Обновление состояния долга у должников
@@ -119,31 +107,26 @@ export class DebtsService {
             { $inc: { [pathDebt]: debtor.amount } }, // Уменьшить сумму долга должника на заданную сумму
           )
           .exec();
-
-        console.log(debtor, pathCreditor, pathDebt, debtorFromDB);
       }
-      return this.debtsModel.findByIdAndRemove(id).exec();
+      return this.debtsModel
+        .findByIdAndRemove(new mongoose.Types.ObjectId(id))
+        .exec();
     } catch (e) {
-      console.log(e);
       return e;
     }
   }
 
-  async returnDebt(returnDebtDto: ReturnDebtDto): Promise<ReturnDebts> {
+  async createReturnDebt(returnDebtDto: ReturnDebtDto): Promise<ReturnDebts> {
     // Сохраняем транзацию
     try {
       const createdReturnDebt = new this.returnDebtsModel(returnDebtDto);
       const savedReturnDebt = await createdReturnDebt.save();
-
-      console.log(savedReturnDebt);
 
       // Находим по транзакции должника
       const debtor = savedReturnDebt.debtor;
       const debtorFromDB = await this.usersModel
         .findOne({ name: debtor })
         .exec();
-
-      console.log(debtorFromDB);
 
       for (const creditor of savedReturnDebt.creditors) {
         // Обновление состояния долга у кредиторов
@@ -173,12 +156,9 @@ export class DebtsService {
             { $inc: { [pathCreditor]: creditor.amount } }, // Увеличить сумму долга должника на заданную сумму
           )
           .exec();
-
-        console.log(debtor, pathCreditor, pathDebtor, debtorFromDB);
       }
       return savedReturnDebt;
     } catch (e) {
-      console.log(e);
       return e;
     }
   }
@@ -187,18 +167,18 @@ export class DebtsService {
     return this.returnDebtsModel.find().sort({ _id: -1 }).limit(30).exec();
   }
 
-  async removeReturnDebt(id: number): Promise<ReturnDebts> {
+  async removeReturnDebt(id: string): Promise<ReturnDebts> {
     // Сохраняем транзацию
     try {
-      const returnDebtFromDB = await this.returnDebtsModel.findById(id);
+      const returnDebtFromDB = await this.returnDebtsModel.findById(
+        new mongoose.Types.ObjectId(id),
+      );
 
       // Находим по транзакции должника
       const debtor = returnDebtFromDB.debtor;
       const debtorFromDB = await this.usersModel
         .findOne({ name: debtor })
         .exec();
-
-      console.log(debtorFromDB);
 
       for (const creditor of returnDebtFromDB.creditors) {
         // Обновление состояния долга у кредиторов
@@ -228,12 +208,11 @@ export class DebtsService {
             { $inc: { [pathCreditor]: -creditor.amount } }, // Увеличить сумму долга должника на заданную сумму
           )
           .exec();
-
-        console.log(debtor, pathCreditor, pathDebtor, debtorFromDB);
       }
-      return returnDebtFromDB;
+      return this.returnDebtsModel
+        .findByIdAndRemove(new mongoose.Types.ObjectId(id))
+        .exec();
     } catch (e) {
-      console.log(e);
       return e;
     }
   }

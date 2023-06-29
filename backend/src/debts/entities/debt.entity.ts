@@ -1,4 +1,4 @@
-import { Deptor } from "src/Types/deptor";
+import { Deptor } from 'src/Types/deptor';
 
 export class Debt {
   id: number;

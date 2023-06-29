@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 
 const http = axios.create({
-  baseURL: "https://friends-bill-1f509f580179.herokuapp.com",
+  baseURL: "http://localhost:3001",
 });
 
 http.interceptors.response.use(

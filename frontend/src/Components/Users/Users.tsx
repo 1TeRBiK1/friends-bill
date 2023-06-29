@@ -5,9 +5,11 @@ import { Avatar, Row, Col, Spin, Space } from "antd";
 
 const ColorList = ["#f56a00", "#7265e6", "#ffbf00"];
 
-interface UsersProps {}
+interface UsersProps {
+  reset: number;
+}
 
-const Users: React.FC<UsersProps> = () => {
+const Users: React.FC<UsersProps> = ({ reset }) => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -18,12 +20,12 @@ const Users: React.FC<UsersProps> = () => {
       .then((res) => setUsers(res.data))
       .catch((e) => setError(e))
       .finally(() => setLoading(false));
-  }, []);
+  }, [reset]);
 
   return (
     <>
       {loading ? (
-        <Space direction="vertical" style={{ width: '100%' }}>
+        <Space direction="vertical" style={{ width: "100%" }}>
           <Spin tip="Loading" size="large">
             <div className="content" />
           </Spin>
