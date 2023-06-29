@@ -1,4 +1,4 @@
-import { Row, Card } from "antd";
+import { Row, Card, Space, Spin } from "antd";
 import { useEffect, useState } from "react";
 import http from "../../Axios/http";
 import { IDebtHistory } from "../../Types/DebtHistory";
@@ -27,65 +27,74 @@ const DebtHistory: React.FC = () => {
   }, []);
 
   return (
-    <Row
-      style={{
-        marginTop: "40px",
-        textAlign: "center",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-      }}
-    >
-      <Row>History: </Row>
+    <>
+      {loading ? (
+        <Space direction="vertical" style={{ width: "100%", marginTop: 40 }}>
+          <Spin tip="Loading" size="large">
+            <div className="content" />
+          </Spin>
+        </Space>
+      ) : null}
       <Row
         style={{
-          marginTop: "10px",
+          marginTop: "40px",
+          textAlign: "center",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
         }}
       >
-        {debtHistory.map((e) => (
-          <Row
-            style={{
-              marginTop: "10px",
-              flexDirection: "column",
-              width: "100%",
-              alignItems: "center",
-            }}
-          >
-            <Card
-              title={e.description}
-              bordered={true}
+        <Row>History: </Row>
+        <Row
+          style={{
+            marginTop: "10px",
+          }}
+        >
+          {debtHistory.map((e) => (
+            <Row
               style={{
-                background: "rgb(40, 255, 255)",
-                width: "50%",
-                minWidth: 300,
+                marginTop: "10px",
+                flexDirection: "column",
+                width: "100%",
+                alignItems: "center",
               }}
-              actions={[
-                <DeleteOutlined
-                  key="delete"
-                  onClick={() => console.log("delete")}
-                />,
-              ]}
             >
-              <Row>Кто платил: {e.creditor}</Row>
-              <Row>Сумма: {e.amount}</Row>
-              <Row>Дата: {formatDate(e.date)}</Row>
-              <Row
+              <Card
+                title={e.description}
+                bordered={true}
                 style={{
-                  flexDirection: "column",
+                  background: "rgb(40, 255, 255)",
+                  width: "50%",
+                  minWidth: 300,
                 }}
+                actions={[
+                  <DeleteOutlined
+                    key="delete"
+                    onClick={() => console.log("delete")}
+                  />,
+                ]}
               >
-                <Row>Кому оплатили:</Row>
-                {e.debtors.map((e) => (
-                  <Row>
-                    {e.name} : {e.amount + " BYN"}
-                  </Row>
-                ))}
-              </Row>
-            </Card>
-          </Row>
-        ))}
+                <Row>Кто платил: {e.creditor}</Row>
+                <Row>Сумма: {e.amount}</Row>
+                <Row>Дата: {formatDate(e.date)}</Row>
+                <Row
+                  style={{
+                    flexDirection: "column",
+                  }}
+                >
+                  <Row>Кому оплатили:</Row>
+                  {e.debtors.map((e) => (
+                    <Row>
+                      {e.name} : {e.amount + " BYN"}
+                    </Row>
+                  ))}
+                </Row>
+              </Card>
+            </Row>
+          ))}
+        </Row>
       </Row>
-    </Row>
+    </>
   );
 };
 
