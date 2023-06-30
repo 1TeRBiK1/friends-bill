@@ -1,8 +1,12 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 
+const { REACT_APP_URL_BE } = process.env;
+
 const http = axios.create({
-  baseURL: "https://friends-bill-1f509f580179.herokuapp.com",
+  baseURL: REACT_APP_URL_BE,
 });
+
+console.log(REACT_APP_URL_BE);
 
 http.interceptors.response.use(
   (response: AxiosResponse) => {
